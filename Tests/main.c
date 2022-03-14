@@ -10,7 +10,7 @@
 
 #pragma comment(lib, "ntdll.lib") // For RtlCompareMemory() on x86.
 
-#define ITERATIONS	 128
+#define ITERATIONS   128
 
 #define THREAD_COUNT 64 // <= MAXIMUM_WAIT_OBJECTS (64).
 
@@ -31,13 +31,13 @@ static const BYTE g_bMemPattern[] =
 static VOID CheckMemBorders(PCBYTE pbMem, SIZE_T Size)
 {
 	assert(*(PDWORD)(pbMem - sizeof(DWORD)) == MEM_ALLOCATED);
-	assert(*(PDWORD)(pbMem + Size)			== MEM_ALLOCATED);
+	assert(*(PDWORD)(pbMem + Size)          == MEM_ALLOCATED);
 }
 
 static DWORD WINAPI TestThread(PVOID pvParam)
 {
 	DWORD  dwRes,
-		   i;
+	       i;
 	PBYTE  pbMem = NULL;
 	SIZE_T Size;
 
@@ -68,9 +68,9 @@ INT wmain(INT Argc, WCHAR* pArgv[], WCHAR* pEnv[])
 	PBYTE  pbMem  = NULL;
 	SIZE_T Size;
 	HANDLE hStart = NULL,
-		   hThreads[THREAD_COUNT];
+	       hThreads[THREAD_COUNT];
 	DWORD  i,
-		   dwRes;
+	       dwRes;
 
 	assert(ARRAYSIZE(hThreads) <= MAXIMUM_WAIT_OBJECTS);
 

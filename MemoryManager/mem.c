@@ -1,18 +1,18 @@
 #include "mem.h"
 
 #ifdef _DEBUG
-#	define DEBUG_MSGW(format, ...)	{ \
-										SYSTEMTIME Time123; \
-										WCHAR	   Tmp123[512]; \
-										INT		   Res123; \
-										GetLocalTime(&Time123); \
-										Res123 = wsprintfW(Tmp123, L"[%02u:%02u:%02u:%03u]: " __FILEW__ L" - " __FUNCTIONW__ L"(): " format L"\n", \
-											Time123.wHour, Time123.wMinute, Time123.wSecond, Time123.wMilliseconds, __VA_ARGS__); \
-										if (Res123 >= 512) DebugBreak(); \
-										OutputDebugStringW(Tmp123); \
-									}
+#	define DEBUG_MSGW(format, ...)  { \
+	                                    SYSTEMTIME Time123; \
+	                                    WCHAR      Tmp123[512]; \
+	                                    INT        Res123; \
+	                                    GetLocalTime(&Time123); \
+	                                    Res123 = wsprintfW(Tmp123, L"[%02u:%02u:%02u:%03u]: " __FILEW__ L" - " __FUNCTIONW__ L"(): " format L"\n", \
+		                                    Time123.wHour, Time123.wMinute, Time123.wSecond, Time123.wMilliseconds, __VA_ARGS__); \
+	                                    if (Res123 >= 512) DebugBreak(); \
+	                                    OutputDebugStringW(Tmp123); \
+	                                }
 #else
-#	define DEBUG_MSGW(format, ...)	{}
+#	define DEBUG_MSGW(format, ...)  {}
 #endif
 
 static HANDLE g_hHeap = NULL;
@@ -123,7 +123,7 @@ PVOID MemAlloc(SIZE_T Size)
 	{
 		if (pbMem = (PBYTE)HeapAlloc(g_hHeap, HEAP_ZERO_MEMORY, Size + sizeof(DWORD) * 2))
 		{
-			*(PDWORD)pbMem						  = MEM_ALLOCATED;
+			*(PDWORD)pbMem                        = MEM_ALLOCATED;
 			*(PDWORD)&pbMem[sizeof(DWORD) + Size] = MEM_ALLOCATED;
 
 			InterlockedIncrement64(&g_llMemCount);
@@ -152,7 +152,7 @@ PVOID MemReAlloc(PVOID pvMem, SIZE_T NewSize)
 			{
 				if (pbNewMem = (PBYTE)HeapReAlloc(g_hHeap, HEAP_ZERO_MEMORY, (PVOID)((PBYTE)pvMem - sizeof(DWORD)), NewSize + sizeof(DWORD) * 2))
 				{
-					*(PDWORD)pbNewMem							= MEM_ALLOCATED;
+					*(PDWORD)pbNewMem                           = MEM_ALLOCATED;
 					*(PDWORD)&pbNewMem[sizeof(DWORD) + NewSize] = MEM_ALLOCATED;
 				}
 				else
@@ -202,7 +202,7 @@ VOID MemFree(PVOID pvMem)
 			if (Size != INVALID_MEM_SIZE)
 			{
 				*(PDWORD)((PBYTE)pvMem - sizeof(DWORD)) = MEM_FREED;
-				*(PDWORD)((PBYTE)pvMem + Size)			= MEM_FREED;
+				*(PDWORD)((PBYTE)pvMem + Size)          = MEM_FREED;
 
 				HeapFree(g_hHeap, 0, (PVOID)((PBYTE)pvMem - sizeof(DWORD)));
 				pvMem = NULL;
@@ -234,7 +234,7 @@ VOID MemFreeEx(PVOID pvMem)
 			if (Size != INVALID_MEM_SIZE)
 			{
 				*(PDWORD)((PBYTE)pvMem - sizeof(DWORD)) = MEM_FREED;
-				*(PDWORD)((PBYTE)pvMem + Size)			= MEM_FREED;
+				*(PDWORD)((PBYTE)pvMem + Size)          = MEM_FREED;
 
 				SecureZeroMemory(pvMem, Size);
 
@@ -266,11 +266,11 @@ static VOID MemCheckCounter(VOID)
 
 static BOOL MemCheckMem(PVOID pvMem)
 {
-	PBYTE  pbTemp	= NULL;
+	PBYTE  pbTemp   = NULL;
 	SIZE_T Size;
 	PDWORD pdwBegin = NULL,
-		   pdwEnd	= NULL;
-	BOOL   Ok		= FALSE;
+	       pdwEnd   = NULL;
+	BOOL   Ok       = FALSE;
 
 	pbTemp = (PBYTE)pvMem - sizeof(DWORD);
 
@@ -281,7 +281,7 @@ static BOOL MemCheckMem(PVOID pvMem)
 		if (Size != INVALID_MEM_SIZE)
 		{
 			pdwBegin = (PDWORD)pbTemp;
-			pdwEnd	 = (PDWORD)((PBYTE)pvMem + Size);
+			pdwEnd   = (PDWORD)((PBYTE)pvMem + Size);
 
 			__try
 			{

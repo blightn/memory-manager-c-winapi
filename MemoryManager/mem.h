@@ -3,8 +3,8 @@
 
 #include <Windows.h>
 
-#define MEM_ALLOCATED	 0x12345678
-#define MEM_FREED		 0x87654321
+#define MEM_ALLOCATED    0x12345678
+#define MEM_FREED        0x87654321
 #define INVALID_MEM_SIZE ((SIZE_T)-1)
 
 typedef const VOID* PCVOID;

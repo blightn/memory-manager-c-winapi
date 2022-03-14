@@ -10,7 +10,7 @@ INT wmain(INT Argc, WCHAR* pArgv[], WCHAR* pEnv[])
 
 	DWORD dwSize;
 	PWSTR pDst = NULL,
-		  pTmp = NULL;
+	      pTmp = NULL;
 
 	if (MemInit())
 	{
